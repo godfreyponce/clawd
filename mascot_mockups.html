@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clawd — boot mascot (pixel crab, hop)</title>
+<style>
+  :root{--orange:#ff6a13;--panel:#252428;--line:#38343a;--ink:#e8e4dc;--mut:#8a8278}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#1c1c20;color:var(--ink);font-family:'Courier New',monospace;
+    min-height:100vh;padding:32px 18px 60px;display:flex;flex-direction:column;align-items:center}
+  h1{font-size:16px;letter-spacing:2px;color:var(--orange);font-weight:bold;text-align:center}
+  .sub{font-size:11px;color:var(--mut);letter-spacing:1px;margin:8px 0 24px;text-align:center;line-height:1.6}
+  .row{display:flex;flex-wrap:wrap;gap:26px;justify-content:center;align-items:flex-start}
+  .card{background:var(--panel);border:1.5px solid var(--line);border-radius:16px;padding:16px 16px 18px;
+    width:280px;display:flex;flex-direction:column;align-items:center;gap:11px}
+  .screen{width:240px;height:240px;border-radius:14px;overflow:hidden;box-shadow:0 0 0 6px #0c0c0e,0 10px 24px rgba(0,0,0,.5)}
+  canvas{display:block;width:240px;height:240px}
+  .nm{font-size:14px;font-weight:bold;letter-spacing:1px}.nm b{color:var(--orange)}
+  .ht{font-size:10.5px;color:var(--mut);line-height:1.55;text-align:center}
+  .tag{font-size:9px;color:#5a5048;letter-spacing:2px}
+  footer{margin-top:26px;font-size:10px;color:#5a5048;text-align:center;max-width:560px;line-height:1.7}
+</style>
+</head>
+<body>
+  <h1>CLAWD — BOOT MASCOT (hop)</h1>
+  <div class="sub">the real pixel Clawd crab, hopping across (motion C) &middot; same blocky shape: orange body, black eyes, top nubs, side arms, 4 legs<br>since the body is the same orange as the screen, pick the contrast treatment:</div>
+  <div class="row">
+    <div class="card"><div class="screen"><canvas id="dark" width="240" height="240"></canvas></div>
+      <div class="nm">1 &middot; <b>On dark</b></div><div class="ht">Mascot segment uses a near-black background so the full orange crab pops. Most faithful to the sticker.</div><div class="tag">FILLED ORANGE</div></div>
+    <div class="card"><div class="screen"><canvas id="orange" width="240" height="240"></canvas></div>
+      <div class="nm">2 &middot; <b>On orange</b></div><div class="ht">Keeps the orange boot background; crab gets a white keyline outline so the shape reads. Matches the rest of the boot.</div><div class="tag">WHITE OUTLINE</div></div>
+  </div>
+  <footer>Boot flow: "Clawd" splash → <b>this mascot hops across</b> → Anthropic logo → WiFi info (~2s) → idle eyes.<br>Tell me "1" or "2" (and any size/speed tweak) and I'll build it into the firmware & flash.</footer>
+<script>
+const W=240,H=240,ORANGE='#ff6a13',BLACK='#000',WHITE='#fff',DARK='#161616';
+function dpr(cv){const r=window.devicePixelRatio||1;cv.width=240*r;cv.height=240*r;cv.style.width='240px';cv.style.height='240px';const x=cv.getContext('2d');x.scale(r,r);return x;}
+
+// Pixel Clawd crab: body + 2 top nubs + 2 side arms + 4 legs + 2 black eyes.
+// cx,cy = centre of the main body block; u = pixel unit.
+function parts(u){const bw=13*u,bh=9*u,L=-bw/2,T=-bh/2;
+  return{ solid:[
+    [L,T,bw,bh],                       // body
+    [L+2*u,T-2*u,2*u,2*u],[L+9*u,T-2*u,2*u,2*u],     // top nubs
+    [L-1.5*u,T+3.5*u,1.5*u,2.5*u],[L+bw,T+3.5*u,1.5*u,2.5*u], // side arms
+    [L,T+bh,2.2*u,3*u],[L+3.6*u,T+bh,2.2*u,3*u],[L+7.2*u,T+bh,2.2*u,3*u],[L+10.8*u,T+bh,2.2*u,3*u] // 4 legs
+  ], eyes:[[L+2.4*u,T+2.4*u,2*u,2*u],[L+8.6*u,T+2.4*u,2*u,2*u]] };}
+function clawd(ctx,cx,cy,u,fill,outline){const p=parts(u);
+  if(outline){ctx.fillStyle=outline;for(const r of p.solid)ctx.fillRect(cx+r[0]-3,cy+r[1]-3,r[2]+6,r[3]+6);}
+  ctx.fillStyle=fill;for(const r of p.solid)ctx.fillRect(cx+r[0],cy+r[1],r[2],r[3]);
+  ctx.fillStyle=BLACK;for(const e of p.eyes)ctx.fillRect(cx+e[0],cy+e[1],e[2],e[3]);}
+
+const items=[];
+function reg(id,bg,draw){const cv=document.getElementById(id);if(cv)items.push({ctx:dpr(cv),bg,draw});}
+// hop across: x crosses left→right, y bounces in arcs
+reg('dark',DARK,(ctx,t)=>{const dur=3000,p=(t%dur)/dur,x=-55+p*(W+110),hop=Math.abs(Math.sin(p*Math.PI*4))*32;
+  clawd(ctx,x,150-hop,6,ORANGE,null);});
+reg('orange',ORANGE,(ctx,t)=>{const dur=3000,p=(t%dur)/dur,x=-55+p*(W+110),hop=Math.abs(Math.sin(p*Math.PI*4))*32;
+  clawd(ctx,x,150-hop,6,ORANGE,WHITE);});
+
+let t0=null;
+function frame(ts){if(t0===null)t0=ts;const t=ts-t0;for(const it of items){it.ctx.fillStyle=it.bg;it.ctx.fillRect(0,0,W,H);it.draw(it.ctx,t);}requestAnimationFrame(frame);}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

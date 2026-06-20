@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clawd Mochi — "working" face variants</title>
+<style>
+  :root{ --orange:#ff6a13; --panel:#252428; --line:#38343a; --ink:#e8e4dc; --mut:#8a8278; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:#1c1c20;color:var(--ink);
+    font-family:'Courier New',monospace;
+    min-height:100vh;padding:32px 18px 60px;
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+  }
+  h1{font-size:16px;letter-spacing:2px;color:var(--orange);font-weight:bold}
+  .sub{font-size:11px;color:var(--mut);letter-spacing:1px;margin-bottom:22px;text-align:center;line-height:1.6}
+  .row{display:flex;flex-wrap:wrap;gap:26px;justify-content:center;align-items:flex-start}
+  .card{
+    background:var(--panel);border:1.5px solid var(--line);border-radius:16px;
+    padding:16px 16px 18px;width:280px;display:flex;flex-direction:column;align-items:center;gap:12px;
+  }
+  .screen{
+    width:240px;height:240px;border-radius:14px;overflow:hidden;
+    box-shadow:0 0 0 6px #0c0c0e, 0 10px 24px rgba(0,0,0,.5);
+  }
+  canvas{display:block;width:240px;height:240px}
+  .nm{font-size:14px;font-weight:bold;color:var(--ink);letter-spacing:1px}
+  .nm b{color:var(--orange)}
+  .ht{font-size:10.5px;color:var(--mut);line-height:1.6;text-align:center}
+  .tag{font-size:9px;color:#5a5048;letter-spacing:2px;margin-top:2px}
+  footer{margin-top:30px;font-size:10px;color:#5a5048;text-align:center;line-height:1.7;max-width:560px}
+</style>
+</head>
+<body>
+  <h1>CLAWD &middot; "WORKING" FACE</h1>
+  <div class="sub">three directions &middot; drawn at true 240&times;240 device geometry &middot; orange = bambu mandarin (255,106,19)<br>each blinks occasionally, like the idle loop</div>
+
+  <div class="row">
+    <div class="card">
+      <div class="screen"><canvas id="a" width="240" height="240"></canvas></div>
+      <div class="nm">A &middot; <b>Steady Focus</b></div>
+      <div class="ht">Today's face + three "thinking" dots cycling below the mouth. Minimal change.</div>
+      <div class="tag">CLOSEST TO CURRENT</div>
+    </div>
+
+    <div class="card">
+      <div class="screen"><canvas id="b" width="240" height="240"></canvas></div>
+      <div class="nm">B &middot; <b>Determined</b></div>
+      <div class="ht">Angled brows slant inward over the eyes for a concentrated look. Flat mouth.</div>
+      <div class="tag">MOST EXPRESSIVE</div>
+    </div>
+
+    <div class="card">
+      <div class="screen"><canvas id="c" width="240" height="240"></canvas></div>
+      <div class="nm">C &middot; <b>Heads-Down</b></div>
+      <div class="ht">Half-lidded eyes looking down + a progress bar sweeping near the chin.</div>
+      <div class="tag">MOST LITERAL</div>
+    </div>
+  </div>
+
+  <footer>
+    All shapes use only Adafruit-GFX primitives (fillRect / drawLine / fillTriangle / fillCircle),
+    so any of these is directly buildable in the <code>working</code> branch of handleSerialCommand().
+    Tell me which one (or a mix) and I'll wire it into the .ino.
+  </footer>
+
+<script>
+// ── Device geometry, copied from clawd_mochi.ino ──────────────────
+const W = 240, H = 240;
+const EYE_W = 30, EYE_H = 60, EYE_GAP = 120, EYE_OY = 40;
+const LX = (W - (EYE_W*2 + EYE_GAP)) / 2;   // 30
+const RX = LX + EYE_W + EYE_GAP;            // 180
+const EY = (H - EYE_H) / 2 - EYE_OY;        // 50
+const MX = W / 2;                           // 120
+const MY = 155;                             // flat-mouth top
+const ORANGE = '#ff6a13', BLACK = '#000000';
+
+function dpr(cv){
+  const r = window.devicePixelRatio || 1;
+  cv.width = 240 * r; cv.height = 240 * r;
+  cv.style.width = '240px'; cv.style.height = '240px';
+  const ctx = cv.getContext('2d');
+  ctx.scale(r, r);
+  return ctx;
+}
+
+function base(ctx){ ctx.fillStyle = ORANGE; ctx.fillRect(0,0,W,H); }
+
+// eyes: blink=true draws the thin closed bars; lidFrac shrinks the eye
+// from the top (0 = full eye, 0.5 = half-lidded, looking down)
+function eyes(ctx, blink, lidFrac=0){
+  ctx.fillStyle = BLACK;
+  if (blink){
+    ctx.fillRect(LX, EY + EYE_H/2 - 3, EYE_W, 6);
+    ctx.fillRect(RX, EY + EYE_H/2 - 3, EYE_W, 6);
+    return;
+  }
+  const cut = EYE_H * lidFrac;
+  ctx.fillRect(LX, EY + cut, EYE_W, EYE_H - cut);
+  ctx.fillRect(RX, EY + cut, EYE_W, EYE_H - cut);
+}
+
+function flatMouth(ctx){ ctx.fillStyle = BLACK; ctx.fillRect(MX-30, MY, 60, 14); }
+
+// ── Variant A: Steady Focus (cycling dots) ────────────────────────
+function drawA(ctx, t, blink){
+  base(ctx);
+  eyes(ctx, blink);
+  flatMouth(ctx);
+  const active = Math.floor(t / 320) % 3;      // 0,1,2 cycle
+  const dy = 200, xs = [MX-26, MX, MX+26];
+  for (let i=0;i<3;i++){
+    const on = i === active;
+    ctx.fillStyle = BLACK;
+    ctx.globalAlpha = on ? 1 : 0.32;
+    ctx.beginPath();
+    ctx.arc(xs[i], dy, on ? 7 : 5, 0, Math.PI*2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+
+// ── Variant B: Determined (angled brows) ──────────────────────────
+function brow(ctx, x, innerLower){
+  // a thick slanted bar above an eye; innerLower=true => inner end dips down
+  ctx.strokeStyle = BLACK;
+  ctx.lineWidth = 9; ctx.lineCap = 'round';
+  const top = EY - 16, drop = 12;
+  ctx.beginPath();
+  if (innerLower){            // left brow: low on the right (inner) side
+    ctx.moveTo(x - 2,        top);
+    ctx.lineTo(x + EYE_W + 4, top + drop);
+  } else {                    // right brow: low on the left (inner) side
+    ctx.moveTo(x - 4,        top + drop);
+    ctx.lineTo(x + EYE_W + 2, top);
+  }
+  ctx.stroke();
+}
+function drawB(ctx, t, blink){
+  base(ctx);
+  eyes(ctx, blink);
+  brow(ctx, LX, true);
+  brow(ctx, RX, false);
+  flatMouth(ctx);
+}
+
+// ── Variant C: Heads-Down (half-lids + progress bar) ──────────────
+function drawC(ctx, t, blink){
+  base(ctx);
+  eyes(ctx, blink, blink ? 0 : 0.45);   // half-lidded when open
+  flatMouth(ctx);
+  // progress track
+  const bx = 50, by = 206, bw = 140, bh = 12;
+  ctx.fillStyle = BLACK;
+  ctx.fillRect(bx, by, bw, bh);                 // black track
+  // sweeping white fill segment
+  const segW = 46;
+  const span = bw - segW;
+  const phase = (t % 1400) / 1400;              // 0..1
+  // ease back-and-forth so it feels like indeterminate progress
+  const pos = (1 - Math.cos(phase * Math.PI*2)) / 2;
+  const sx = bx + pos * span;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(sx, by+2, segW, bh-4);
+}
+
+// ── Blink scheduler + animation loop ──────────────────────────────
+const faces = [
+  { ctx: dpr(document.getElementById('a')), draw: drawA },
+  { ctx: dpr(document.getElementById('b')), draw: drawB },
+  { ctx: dpr(document.getElementById('c')), draw: drawC },
+];
+faces.forEach(f => { f.nextBlink = 1500 + Math.random()*3500; f.blinkUntil = 0; });
+
+let t0 = null;
+function frame(ts){
+  if (t0 === null) t0 = ts;
+  const t = ts - t0;
+  for (const f of faces){
+    if (t > f.nextBlink && t > f.blinkUntil){
+      f.blinkUntil = t + 130;                    // blink duration
+      f.nextBlink = t + 2500 + Math.random()*4000;
+    }
+    const blinking = t < f.blinkUntil;
+    f.draw(f.ctx, t, blinking);
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

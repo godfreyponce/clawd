@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clawd — "notify" face variants</title>
+<style>
+  :root{--orange:#ff6a13;--panel:#252428;--line:#38343a;--ink:#e8e4dc;--mut:#8a8278}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#1c1c20;color:var(--ink);font-family:'Courier New',monospace;
+    min-height:100vh;padding:32px 18px 60px;display:flex;flex-direction:column;align-items:center}
+  h1{font-size:16px;letter-spacing:2px;color:var(--orange);font-weight:bold;text-align:center}
+  .sub{font-size:11px;color:var(--mut);letter-spacing:1px;margin:8px 0 24px;text-align:center;line-height:1.6}
+  .row{display:flex;flex-wrap:wrap;gap:26px;justify-content:center;align-items:flex-start}
+  .card{background:var(--panel);border:1.5px solid var(--line);border-radius:16px;padding:16px 16px 18px;
+    width:280px;display:flex;flex-direction:column;align-items:center;gap:11px}
+  .screen{width:240px;height:240px;border-radius:14px;overflow:hidden;box-shadow:0 0 0 6px #0c0c0e,0 10px 24px rgba(0,0,0,.5)}
+  canvas{display:block;width:240px;height:240px}
+  .nm{font-size:14px;font-weight:bold;letter-spacing:1px}.nm b{color:var(--orange)}
+  .ht{font-size:10.5px;color:var(--mut);line-height:1.55;text-align:center}
+  .tag{font-size:9px;color:#5a5048;letter-spacing:2px}
+  footer{margin-top:26px;font-size:10px;color:#5a5048;text-align:center;max-width:560px;line-height:1.7}
+</style>
+</head>
+<body>
+  <h1>CLAWD — "NOTIFY" FACE</h1>
+  <div class="sub">when a Claude Code session needs your input &middot; this face HOLDS (idle frozen) until "done"<br>so each variant has a gentle looping motion to keep catching your eye</div>
+  <div class="row">
+    <div class="card"><div class="screen"><canvas id="a" width="240" height="240"></canvas></div>
+      <div class="nm">A &middot; <b>Alert</b></div><div class="ht">Calm eyes + a blinking exclamation mark. Clearest "attention needed" read.</div><div class="tag">EXCLAMATION</div></div>
+    <div class="card"><div class="screen"><canvas id="b" width="240" height="240"></canvas></div>
+      <div class="nm">B &middot; <b>Surprised</b></div><div class="ht">Raised brows + a pulsing round "O" mouth. The "oh! — you're needed" look.</div><div class="tag">EXPRESSION</div></div>
+    <div class="card"><div class="screen"><canvas id="c" width="240" height="240"></canvas></div>
+      <div class="nm">C &middot; <b>Bounce</b></div><div class="ht">Eyes + open mouth, whole face gently bobs up & down to grab your eye.</div><div class="tag">MOTION</div></div>
+  </div>
+  <footer>All device-feasible (rects / circles / lines). Current notify face is a static open square mouth.<br>Pick A / B / C (or mix) and I'll wire it into the "notify" command + flash.</footer>
+<script>
+const W=240,H=240,ORANGE='#ff6a13',BLACK='#000',WHITE='#fff';
+const EYE_W=30,EYE_H=60,EYE_GAP=120,EYE_OY=40;
+const LX=(W-(EYE_W*2+EYE_GAP))/2,RX=LX+EYE_W+EYE_GAP,EY=(H-EYE_H)/2-EYE_OY,MX=W/2;
+function dpr(cv){const r=window.devicePixelRatio||1;cv.width=240*r;cv.height=240*r;cv.style.width='240px';cv.style.height='240px';const x=cv.getContext('2d');x.scale(r,r);return x;}
+function base(ctx){ctx.fillStyle=ORANGE;ctx.fillRect(0,0,W,H);}
+function eyes(ctx,o){o=o||{};const ox=o.ox||0,dy=o.dy||0;ctx.fillStyle=BLACK;const lx=LX+ox,rx=RX+ox;
+  if(o.blink){ctx.fillRect(lx,EY+dy+EYE_H/2-3,EYE_W,6);ctx.fillRect(rx,EY+dy+EYE_H/2-3,EYE_W,6);return;}
+  ctx.fillRect(lx,EY+dy,EYE_W,EYE_H);ctx.fillRect(rx,EY+dy,EYE_W,EYE_H);}
+
+// A — Alert: calm eyes + a blinking exclamation mark
+function notifyA(ctx,t,blink){base(ctx);eyes(ctx,{blink});
+  if((t%900)<600){ctx.fillStyle=BLACK;ctx.fillRect(MX-7,128,14,34);ctx.fillRect(MX-7,170,14,14);}}
+
+// B — Surprised: raised brows + pulsing round "O" mouth
+function notifyB(ctx,t,blink){base(ctx);
+  ctx.strokeStyle=BLACK;ctx.lineWidth=6;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(LX-2,EY-12);ctx.lineTo(LX+EYE_W+2,EY-18);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(RX-2,EY-18);ctx.lineTo(RX+EYE_W+2,EY-12);ctx.stroke();
+  eyes(ctx,{blink});
+  const r=17+Math.sin(t/240)*4;
+  ctx.fillStyle=BLACK;ctx.beginPath();ctx.arc(MX,166,r,0,7);ctx.fill();
+  ctx.fillStyle=ORANGE;ctx.beginPath();ctx.arc(MX,166,r*0.5,0,7);ctx.fill();}
+
+// C — Bounce: eyes + open square mouth, whole face bobs
+function notifyC(ctx,t){base(ctx);const bob=Math.sin(t/200)*6;
+  ctx.fillStyle=BLACK;ctx.fillRect(LX,EY+bob,EYE_W,EYE_H);ctx.fillRect(RX,EY+bob,EYE_W,EYE_H);
+  const my=150+bob;ctx.fillStyle=BLACK;ctx.fillRect(MX-22,my,44,40);
+  ctx.fillStyle=ORANGE;ctx.fillRect(MX-9,my+13,18,18);}
+
+const faces=[];
+function reg(id,draw){const cv=document.getElementById(id);if(cv)faces.push({ctx:dpr(cv),draw,blinkUntil:0,nextBlink:1500+Math.random()*3000});}
+reg('a',notifyA);reg('b',notifyB);reg('c',notifyC);
+let t0=null;
+function frame(ts){if(t0===null)t0=ts;const t=ts-t0;
+  for(const f of faces){if(t>f.nextBlink&&t>f.blinkUntil){f.blinkUntil=t+130;f.nextBlink=t+2600+Math.random()*4000;}f.draw(f.ctx,t,t<f.blinkUntil);}
+  requestAnimationFrame(frame);}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+next-env.d.ts
+
+# Logs & OS cruft
+*.log
+npm-debug.log*
+.DS_Store
+
+# Arduino / build artifacts
+build/
+*.elf

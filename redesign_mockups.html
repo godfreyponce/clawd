@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clawd Mochi — redesign mockups</title>
+<style>
+  :root{ --orange:#ff6a13; --panel:#252428; --line:#38343a; --ink:#e8e4dc; --mut:#8a8278; --green:#50dc82; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#1c1c20;color:var(--ink);font-family:'Courier New',monospace;
+    min-height:100vh;padding:30px 18px 70px;display:flex;flex-direction:column;align-items:center}
+  h1{font-size:16px;letter-spacing:2px;color:var(--orange);font-weight:bold;text-align:center}
+  .intro{font-size:11px;color:var(--mut);letter-spacing:1px;margin:8px 0 26px;text-align:center;line-height:1.6}
+  .section{width:100%;max-width:960px;margin-bottom:34px}
+  .shead{font-size:13px;color:var(--ink);font-weight:bold;letter-spacing:2px;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:4px}
+  .sdesc{font-size:10.5px;color:var(--mut);line-height:1.6;margin:6px 0 16px}
+  .row{display:flex;flex-wrap:wrap;gap:24px;justify-content:center;align-items:flex-start}
+  .card{background:var(--panel);border:1.5px solid var(--line);border-radius:16px;
+    padding:16px 16px 18px;width:280px;display:flex;flex-direction:column;align-items:center;gap:11px}
+  .screen{width:240px;height:240px;border-radius:14px;overflow:hidden;
+    box-shadow:0 0 0 6px #0c0c0e,0 10px 24px rgba(0,0,0,.5)}
+  canvas{display:block;width:240px;height:240px}
+  .nm{font-size:14px;font-weight:bold;color:var(--ink);letter-spacing:1px}
+  .nm b{color:var(--orange)}
+  .ht{font-size:10.5px;color:var(--mut);line-height:1.55;text-align:center}
+  .tag{font-size:9px;color:#5a5048;letter-spacing:2px}
+  footer{margin-top:14px;font-size:10px;color:#5a5048;text-align:center;max-width:620px;line-height:1.7}
+</style>
+</head>
+<body>
+  <h1>CLAWD MOCHI — REDESIGN MOCKUPS</h1>
+  <div class="intro">true 240&times;240 device geometry &middot; GFX-only primitives &middot; animated<br>pick one per section (or mix & match) and I'll build it into the firmware</div>
+
+  <div class="section">
+    <div class="shead">① BOOT SCREEN <span style="color:var(--mut);font-weight:normal">— what shows when you plug into the Mac</span></div>
+    <div class="sdesc">Currently: orange "Clawd/Mochi" splash → the Anthropic asterisk logo → WiFi info screen. These replace the hero (logo) frame.</div>
+    <div class="row">
+      <div class="card"><div class="screen"><canvas id="boot-a" width="240" height="240"></canvas></div>
+        <div class="nm">A &middot; <b>Clawd waking</b></div><div class="ht">Clawd's own eyes + "CLAWD MOCHI" wordmark + boot bar. Own identity.</div><div class="tag">CRAB BRANDING</div></div>
+      <div class="card"><div class="screen"><canvas id="boot-b" width="240" height="240"></canvas></div>
+        <div class="nm">B &middot; <b>Minimal</b></div><div class="ht">Dark, editorial. Tiny mark, lowercase wordmark, thin loading line.</div><div class="tag">TYPOGRAPHIC</div></div>
+      <div class="card"><div class="screen"><canvas id="boot-c" width="240" height="240"></canvas></div>
+        <div class="nm">C &middot; <b>Sunburst</b></div><div class="ht">A cleaner radiating mark (Claude nod) + "powered by Claude".</div><div class="tag">RESTYLED ANTHROPIC</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="shead">② WORKING FACE <span style="color:var(--mut);font-weight:normal">— a session is running</span></div>
+    <div class="sdesc">Currently: half-lidded eyes + flat mouth + a thin sweeping bar (Variant C). Fresh takes below.</div>
+    <div class="row">
+      <div class="card"><div class="screen"><canvas id="work-a" width="240" height="240"></canvas></div>
+        <div class="nm">A &middot; <b>Heads-down+</b></div><div class="ht">Same droop, but a chunky 6-segment progress bar that fills in steps.</div><div class="tag">REFINED CURRENT</div></div>
+      <div class="card"><div class="screen"><canvas id="work-b" width="240" height="240"></canvas></div>
+        <div class="nm">B &middot; <b>Typing</b></div><div class="ht">Eyes glance around; a blinking block cursor + dashes "writes" below.</div><div class="tag">ACTIVELY CODING</div></div>
+      <div class="card"><div class="screen"><canvas id="work-c" width="240" height="240"></canvas></div>
+        <div class="nm">C &middot; <b>Processing</b></div><div class="ht">Eyes + a rotating dot spinner near the chin. Abstract "thinking".</div><div class="tag">SPINNER</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="shead">③ DONE FACE <span style="color:var(--mut);font-weight:normal">— task finished, idle resumes</span></div>
+    <div class="sdesc">Currently: just the plain idle eyes come back (no distinct "done" moment). Give it an expression.</div>
+    <div class="row">
+      <div class="card"><div class="screen"><canvas id="done-a" width="240" height="240"></canvas></div>
+        <div class="nm">A &middot; <b>Happy</b></div><div class="ht">Bright eyes + a big blocky smile + little sparkles. "Nice, done!"</div><div class="tag">SATISFIED</div></div>
+      <div class="card"><div class="screen"><canvas id="done-b" width="240" height="240"></canvas></div>
+        <div class="nm">B &middot; <b>Content</b></div><div class="ht">Closed happy eyes (∧ ∧) + soft smile. Calm, off-duty.</div><div class="tag">RELAXED</div></div>
+      <div class="card"><div class="screen"><canvas id="done-c" width="240" height="240"></canvas></div>
+        <div class="nm">C &middot; <b>Complete</b></div><div class="ht">Eyes + a green checkmark that pulses in. Clear "task complete".</div><div class="tag">CHECKMARK</div></div>
+    </div>
+  </div>
+
+  <footer>Every shape here is buildable with fillRect / drawLine / fillTriangle / fillCircle / text — the same
+  primitives already used in the .ino. Tell me your picks (e.g. "boot B, working A, done C") and I'll wire them in and flash.</footer>
+
+<script>
+const W=240,H=240, ORANGE='#ff6a13', BLACK='#000000', WHITE='#ffffff', GREEN='#50dc82';
+const EYE_W=30,EYE_H=60,EYE_GAP=120,EYE_OY=40;
+const LX=(W-(EYE_W*2+EYE_GAP))/2, RX=LX+EYE_W+EYE_GAP, EY=(H-EYE_H)/2-EYE_OY;  // 30,180,50
+const MX=W/2, MY=155;
+
+function dpr(cv){const r=window.devicePixelRatio||1;cv.width=240*r;cv.height=240*r;cv.style.width='240px';cv.style.height='240px';const x=cv.getContext('2d');x.scale(r,r);return x;}
+function base(ctx,c){ctx.fillStyle=c||ORANGE;ctx.fillRect(0,0,W,H);}
+function eyes(ctx,o){o=o||{};const ox=o.ox||0,lid=o.lid||0;ctx.fillStyle=BLACK;const lx=LX+ox,rx=RX+ox;
+  if(o.blink){ctx.fillRect(lx,EY+EYE_H/2-3,EYE_W,6);ctx.fillRect(rx,EY+EYE_H/2-3,EYE_W,6);return;}
+  const cut=EYE_H*lid;ctx.fillRect(lx,EY+cut,EYE_W,EYE_H-cut);ctx.fillRect(rx,EY+cut,EYE_W,EYE_H-cut);}
+function flatMouth(ctx){ctx.fillStyle=BLACK;ctx.fillRect(MX-30,MY,60,14);}
+function happyEye(ctx,cx){const w=30,h=15,y=EY+22;ctx.strokeStyle=BLACK;ctx.lineWidth=9;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();ctx.moveTo(cx-w/2,y+h);ctx.lineTo(cx,y);ctx.lineTo(cx+w/2,y+h);ctx.stroke();}
+function smile(ctx,cx,cyTop,width,amp,color){ctx.fillStyle=color;const n=11,r=4;
+  for(let i=0;i<n;i++){const t=i/(n-1);const x=cx-width/2+t*width;const y=cyTop+Math.sin(t*Math.PI)*amp;ctx.fillRect(Math.round(x)-r,Math.round(y)-r,2*r,2*r);}}
+function sparkle(ctx,x,y,s,color){ctx.fillStyle=color;ctx.fillRect(x-1.5,y-s,3,2*s);ctx.fillRect(x-s,y-1.5,2*s,3);}
+function checkmark(ctx,cx,cy,scale,color){ctx.strokeStyle=color;ctx.lineWidth=9;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();ctx.moveTo(cx-22*scale,cy);ctx.lineTo(cx-6*scale,cy+16*scale);ctx.lineTo(cx+24*scale,cy-18*scale);ctx.stroke();}
+function spinner(ctx,cx,cy,radius,t,color){const n=8,active=Math.floor(t/90)%n;
+  for(let i=0;i<n;i++){const a=i/n*Math.PI*2-Math.PI/2;const x=cx+Math.cos(a)*radius,y=cy+Math.sin(a)*radius;
+    const d=((i-active)+n)%n;ctx.globalAlpha=Math.max(0.12,1-d*0.15);ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,3.2,0,7);ctx.fill();}ctx.globalAlpha=1;}
+function segBar(ctx,x,y,w,h,segs,t,color){const gap=5,sw=(w-gap*(segs-1))/segs,lit=Math.floor(t/220)%(segs+1);
+  for(let i=0;i<segs;i++){const on=i<lit;ctx.globalAlpha=on?1:0.22;ctx.fillStyle=color;ctx.fillRect(x+i*(sw+gap),y,sw,h);}ctx.globalAlpha=1;}
+function txt(ctx,str,cx,y,px,color,ls){ctx.font=`bold ${px}px "Courier New",monospace`;ctx.fillStyle=color;
+  ctx.textAlign='center';ctx.textBaseline='middle';if(ctx.letterSpacing!==undefined)ctx.letterSpacing=(ls||0)+'px';
+  ctx.fillText(str,cx,y);if(ctx.letterSpacing!==undefined)ctx.letterSpacing='0px';}
+
+// ===== BOOT =====
+function bootA(ctx,t,blink){base(ctx,ORANGE);eyes(ctx,{blink});
+  txt(ctx,'CLAWD MOCHI',MX,148,20,WHITE,1);
+  const bx=50,by=198,bw=140,bh=8;ctx.fillStyle='rgba(0,0,0,0.25)';ctx.fillRect(bx,by,bw,bh);
+  ctx.fillStyle=WHITE;ctx.fillRect(bx,by,bw*((t%2200)/2200),bh);
+  txt(ctx,'waking up...',MX,220,10,'rgba(255,255,255,0.75)',1);}
+function bootB(ctx,t){base(ctx,'#16161a');
+  ctx.fillStyle=ORANGE;ctx.fillRect(MX-15,84,8,18);ctx.fillRect(MX+7,84,8,18);
+  txt(ctx,'clawd · mochi',MX,128,16,'#e8e4dc',1);
+  const tx=70,ty=150,tw=100,seg=28;ctx.fillStyle='#2e2a28';ctx.fillRect(tx,ty,tw,2);
+  const pos=(1-Math.cos((t%1600)/1600*Math.PI*2))/2;ctx.fillStyle=ORANGE;ctx.fillRect(tx+pos*(tw-seg),ty,seg,2);
+  txt(ctx,'STARTING',MX,174,9,'#5a5048',3);}
+function bootC(ctx,t){base(ctx,ORANGE);const cx=MX,cy=98,spokes=12,grow=Math.min(1,(t%3400)/1200);
+  ctx.strokeStyle=WHITE;ctx.lineWidth=6;ctx.lineCap='round';
+  for(let i=0;i<spokes;i++){const a=i/spokes*Math.PI*2;const r1=14,r2=14+44*grow;
+    ctx.beginPath();ctx.moveTo(cx+Math.cos(a)*r1,cy+Math.sin(a)*r1);ctx.lineTo(cx+Math.cos(a)*r2,cy+Math.sin(a)*r2);ctx.stroke();}
+  txt(ctx,'CLAWD MOCHI',MX,176,18,WHITE,1);txt(ctx,'powered by Claude',MX,200,10,'rgba(255,255,255,0.78)',1);}
+
+// ===== WORKING =====
+function workA(ctx,t,blink){base(ctx,ORANGE);eyes(ctx,{blink,lid:0.45});flatMouth(ctx);segBar(ctx,55,206,130,12,6,t,BLACK);}
+function workB(ctx,t,blink){base(ctx,ORANGE);
+  const phase=Math.floor(t/1300)%4;const glance=phase===0?-8:phase===2?8:0;eyes(ctx,{blink,ox:glance});
+  const ty=160;ctx.fillStyle=BLACK;ctx.fillRect(74,ty,10,6);ctx.fillRect(90,ty,24,6);ctx.fillRect(120,ty,8,6);
+  if(Math.floor(t/420)%2===0){ctx.fillRect(132,ty-5,11,16);}}
+function workC(ctx,t,blink){base(ctx,ORANGE);eyes(ctx,{blink,lid:0.3});spinner(ctx,MX,196,20,t,BLACK);}
+
+// ===== DONE =====
+function doneA(ctx,t,blink){base(ctx,ORANGE);eyes(ctx,{blink});smile(ctx,MX,150,80,16,BLACK);
+  sparkle(ctx,202,46,4+2*Math.sin(t/200),WHITE);sparkle(ctx,42,54,3+2*Math.sin(t/200+1.4),WHITE);}
+function doneB(ctx,t){base(ctx,ORANGE);happyEye(ctx,LX+EYE_W/2);happyEye(ctx,RX+EYE_W/2);smile(ctx,MX,150,58,11,BLACK);}
+function doneC(ctx,t,blink){base(ctx,ORANGE);eyes(ctx,{blink});smile(ctx,MX,150,46,8,BLACK);
+  const pulse=0.92+0.08*Math.sin(t/180);checkmark(ctx,MX,198,pulse,GREEN);}
+
+// ===== loop =====
+const faces=[];
+function reg(id,draw){const cv=document.getElementById(id);if(!cv)return;faces.push({ctx:dpr(cv),draw,blinkUntil:0,nextBlink:1500+Math.random()*3000});}
+['boot-a',bootA,'boot-b',bootB,'boot-c',bootC,'work-a',workA,'work-b',workB,'work-c',workC,'done-a',doneA,'done-b',doneB,'done-c',doneC]
+  .forEach((v,i,a)=>{if(i%2===0)reg(v,a[i+1]);});
+
+let t0=null;
+function frame(ts){if(t0===null)t0=ts;const t=ts-t0;
+  for(const f of faces){if(t>f.nextBlink&&t>f.blinkUntil){f.blinkUntil=t+130;f.nextBlink=t+2600+Math.random()*4000;}
+    f.draw(f.ctx,t,t<f.blinkUntil);}
+  requestAnimationFrame(frame);}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
