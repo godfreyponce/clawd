@@ -3,7 +3,13 @@
 > Read this first if you're a fresh agent/session working on Clyde Mochi.
 > It captures current state, the **exact flashing procedure that works**, and the
 > hard-won problem/solution log from the day we got Variant C onto the board.
-> Last updated: 2026-06-20.
+> Last updated: 2026-06-22.
+
+## Project status: feature-complete (2026-06-22)
+The user considers Clyde done — all the faces/features they use are working, flashed, and verified
+on the board. No open feature requests. Treat further work as additive only; don't refactor or
+"improve" things that aren't broken (see global CLAUDE.md §3). The full working state is committed
+and pushed to `main` (commit `c6fb373`).
 
 ---
 
@@ -27,15 +33,23 @@ Based on github.com/yousifamanuel/clawd-mochi.
 | ESP32 core | `esp32:esp32` **3.3.10** |
 
 Wiring: SDA=GPIO10, SCL=GPIO8, RST=GPIO2, DC=GPIO1, CS=GPIO4, BLK=GPIO3.
-This folder is **not** a git repo. The nested `clyde-mochi/` is the upstream clone (has its own `.git`).
+
+**Git:** the **repo root `~/Developer/clydeMochi` IS a single git repo** (remote
+`github.com/godfreyponce/clawd`, branch `main`). There is **no** nested `.git` inside `clyde-mochi/`
+— it's just a normal tracked directory (the old `clawd-mochi/` was renamed to `clyde-mochi/`; git
+tracked that as renames so history is preserved). Everything is committed and pushed. (Earlier
+versions of this doc wrongly said "not a git repo / nested clone has its own .git" — that's stale.)
 
 ## Current firmware state (what's on the board now — as of 2026-06-20)
 - **Boot sequence**: "Clyde" splash → 🦀 **pixel-crab mascot hops across** on black (`drawClyde` +
   `drawMascotCrossing`, flicker-free: only the crab footprint repaints) → Anthropic logo (now with
   **no "Anthropic" text**) → WiFi info **~2s** → drops straight to **idle eyes** (`started=true`).
-- **`working` face = "typing"**: plain eyes + a status line that types out phrases one char at a time
+- **`working` face = "typing"**: plain eyes + a status line that types out words one char at a time
   with a blinking cursor (`WORK_PHRASES[]`, `drawWorkText()`, `workTypeTick()` in loop; gated on
-  `faceMouth==MOUTH_FLAT`). (Replaced the earlier Variant-C heads-down/sweep-bar.)
+  `faceMouth==MOUTH_FLAT`). (Replaced the earlier Variant-C heads-down/sweep-bar.) `WORK_PHRASES[]`
+  now holds **Claude Code's 106 "thinking" gerunds** (`beaming…`/`brewing…`/…/`zooming…`, lowercase
+  with `"..."`, cycled in order); `WORK_PHRASE_N` auto-derives via `sizeof` — just edit the array to
+  change the words, no count to update.
 - **`notify` face = "bounce"**: eyes + open square mouth, the **whole face gently bobs** (`drawNotifyFace(dy)`
   + `notifyMs` driver in loop, gated on `faceMouth==MOUTH_OPEN`; flicker-free in-place overwrite).
 - **`done` face = "happy"**: brief eyes + blocky smile + twinkling sparkles (`animDone`, `drawSmile`,
