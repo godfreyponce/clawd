@@ -362,6 +362,14 @@ void drawWorkText() {
   if (workCursor) tft.fillRect(startX + n * 12, 140, 10, 16, C_BLACK);
 }
 
+// Pick a random phrase index, avoiding an immediate repeat (so it never looks stuck).
+uint8_t pickWorkPhrase() {
+  if (WORK_PHRASE_N <= 1) return 0;
+  uint8_t next;
+  do { next = esp_random() % WORK_PHRASE_N; } while (next == workPhrase);
+  return next;
+}
+
 // Non-blocking: advance typing + blink the cursor (called from loop while working).
 void workTypeTick() {
   const uint32_t now = millis();
@@ -373,7 +381,7 @@ void workTypeTick() {
       workTickMs = now + (workChars == len ? 1400 : 110);   // pause once full
       drawWorkText();
     } else {                                                // on to next phrase
-      workPhrase = (workPhrase + 1) % WORK_PHRASE_N;
+      workPhrase = pickWorkPhrase();
       workChars = 0;
       workTickMs = now + 350;
       drawWorkText();
@@ -387,7 +395,7 @@ void drawWorkingFace() {
   const int16_t lx = eyeLX(0), rx = eyeRX(0), ey = eyeY();
   tft.fillRect(lx, ey, EYE_W, EYE_H, C_BLACK);
   tft.fillRect(rx, ey, EYE_W, EYE_H, C_BLACK);
-  workPhrase = 0; workChars = 0; workCursor = true;
+  workPhrase = esp_random() % WORK_PHRASE_N; workChars = 0; workCursor = true;
   workTickMs = millis() + 300; workCursorMs = millis() + 450;
   drawWorkText();
 }
