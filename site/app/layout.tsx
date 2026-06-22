@@ -16,13 +16,13 @@ const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 export const metadata: Metadata = {
   title: {
-    default: "Clawd — a desk companion",
-    template: "%s — Clawd",
+    default: "Clyde, a desk companion",
+    template: "%s | Clyde",
   },
   description:
     "A blocky crab on an ESP32-C3 that mirrors your Claude Code sessions on a tiny 240×240 screen. Documentation and the build journey.",
   openGraph: {
-    title: "Clawd — a desk companion",
+    title: "Clyde, a desk companion",
     description:
       "A crab that focuses while you code, taps when it needs you, and celebrates when you're done.",
     type: "website",
@@ -50,7 +50,7 @@ export default function RootLayout({
             <Link href="/" className="flex items-center gap-2 group">
               <Mark />
               <span className="font-serif text-xl font-semibold tracking-tight">
-                Clawd
+                Clyde
               </span>
             </Link>
             <div className="flex items-center gap-8">
@@ -69,9 +69,9 @@ export default function RootLayout({
         <footer className="border-t border-line mt-24">
           <div className="mx-auto max-w-6xl px-6 py-8 flex flex-wrap items-center gap-3 justify-between text-[11px] tracking-[0.12em] text-mut uppercase">
             <span className="flex items-center gap-2">
-              <Mark size={14} /> Clawd · a desk companion
+              <Mark size={14} /> A Desk Companion
             </span>
-            <span>ESP32-C3 · ST7789 240×240 · built with Claude Code</span>
+            <span>Clyde built with ESP32-C3, ST7789 240×240</span>
           </div>
         </footer>
       </body>

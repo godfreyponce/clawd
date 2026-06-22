@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Clawd Mochi — redesign mockups</title>
+<title>Clyde Mochi — redesign mockups</title>
 <style>
   :root{ --orange:#ff6a13; --panel:#252428; --line:#38343a; --ink:#e8e4dc; --mut:#8a8278; --green:#50dc82; }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -28,15 +28,15 @@
 </style>
 </head>
 <body>
-  <h1>CLAWD MOCHI — REDESIGN MOCKUPS</h1>
+  <h1>CLYDE MOCHI — REDESIGN MOCKUPS</h1>
   <div class="intro">true 240&times;240 device geometry &middot; GFX-only primitives &middot; animated<br>pick one per section (or mix & match) and I'll build it into the firmware</div>
 
   <div class="section">
     <div class="shead">① BOOT SCREEN <span style="color:var(--mut);font-weight:normal">— what shows when you plug into the Mac</span></div>
-    <div class="sdesc">Currently: orange "Clawd/Mochi" splash → the Anthropic asterisk logo → WiFi info screen. These replace the hero (logo) frame.</div>
+    <div class="sdesc">Currently: orange "Clyde/Mochi" splash → the Anthropic asterisk logo → WiFi info screen. These replace the hero (logo) frame.</div>
     <div class="row">
       <div class="card"><div class="screen"><canvas id="boot-a" width="240" height="240"></canvas></div>
-        <div class="nm">A &middot; <b>Clawd waking</b></div><div class="ht">Clawd's own eyes + "CLAWD MOCHI" wordmark + boot bar. Own identity.</div><div class="tag">CRAB BRANDING</div></div>
+        <div class="nm">A &middot; <b>Clyde waking</b></div><div class="ht">Clyde's own eyes + "CLYDE MOCHI" wordmark + boot bar. Own identity.</div><div class="tag">CRAB BRANDING</div></div>
       <div class="card"><div class="screen"><canvas id="boot-b" width="240" height="240"></canvas></div>
         <div class="nm">B &middot; <b>Minimal</b></div><div class="ht">Dark, editorial. Tiny mark, lowercase wordmark, thin loading line.</div><div class="tag">TYPOGRAPHIC</div></div>
       <div class="card"><div class="screen"><canvas id="boot-c" width="240" height="240"></canvas></div>
@@ -103,13 +103,13 @@ function txt(ctx,str,cx,y,px,color,ls){ctx.font=`bold ${px}px "Courier New",mono
 
 // ===== BOOT =====
 function bootA(ctx,t,blink){base(ctx,ORANGE);eyes(ctx,{blink});
-  txt(ctx,'CLAWD MOCHI',MX,148,20,WHITE,1);
+  txt(ctx,'CLYDE MOCHI',MX,148,20,WHITE,1);
   const bx=50,by=198,bw=140,bh=8;ctx.fillStyle='rgba(0,0,0,0.25)';ctx.fillRect(bx,by,bw,bh);
   ctx.fillStyle=WHITE;ctx.fillRect(bx,by,bw*((t%2200)/2200),bh);
   txt(ctx,'waking up...',MX,220,10,'rgba(255,255,255,0.75)',1);}
 function bootB(ctx,t){base(ctx,'#16161a');
   ctx.fillStyle=ORANGE;ctx.fillRect(MX-15,84,8,18);ctx.fillRect(MX+7,84,8,18);
-  txt(ctx,'clawd · mochi',MX,128,16,'#e8e4dc',1);
+  txt(ctx,'clyde · mochi',MX,128,16,'#e8e4dc',1);
   const tx=70,ty=150,tw=100,seg=28;ctx.fillStyle='#2e2a28';ctx.fillRect(tx,ty,tw,2);
   const pos=(1-Math.cos((t%1600)/1600*Math.PI*2))/2;ctx.fillStyle=ORANGE;ctx.fillRect(tx+pos*(tw-seg),ty,seg,2);
   txt(ctx,'STARTING',MX,174,9,'#5a5048',3);}
@@ -117,7 +117,7 @@ function bootC(ctx,t){base(ctx,ORANGE);const cx=MX,cy=98,spokes=12,grow=Math.min
   ctx.strokeStyle=WHITE;ctx.lineWidth=6;ctx.lineCap='round';
   for(let i=0;i<spokes;i++){const a=i/spokes*Math.PI*2;const r1=14,r2=14+44*grow;
     ctx.beginPath();ctx.moveTo(cx+Math.cos(a)*r1,cy+Math.sin(a)*r1);ctx.lineTo(cx+Math.cos(a)*r2,cy+Math.sin(a)*r2);ctx.stroke();}
-  txt(ctx,'CLAWD MOCHI',MX,176,18,WHITE,1);txt(ctx,'powered by Claude',MX,200,10,'rgba(255,255,255,0.78)',1);}
+  txt(ctx,'CLYDE MOCHI',MX,176,18,WHITE,1);txt(ctx,'powered by Claude',MX,200,10,'rgba(255,255,255,0.78)',1);}
 
 // ===== WORKING =====
 function workA(ctx,t,blink){base(ctx,ORANGE);eyes(ctx,{blink,lid:0.45});flatMouth(ctx);segBar(ctx,55,206,130,12,6,t,BLACK);}

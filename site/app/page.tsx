@@ -21,7 +21,7 @@ const specs: { h: string; b: string }[] = [
   },
   {
     h: "Self-contained",
-    b: "It hosts its own WiFi web controller and runs an autonomous idle loop — no companion app, nothing to install.",
+    b: "It hosts its own WiFi web controller and runs an autonomous idle loop, so there's no companion app and nothing to install.",
   },
 ];
 
@@ -32,14 +32,14 @@ export default function Home() {
         <div className="grid md:grid-cols-[1.25fr_1fr] gap-12 items-center">
           <div>
             <p className="text-xs tracking-[0.22em] uppercase text-mut mb-6">
-              A desk companion · built with Claude Code
+              A desk companion built with Claude Code
             </p>
             <h1 className="font-serif font-semibold tracking-tight text-5xl md:text-6xl leading-[1.04] text-balance">
               A crab that <span className="text-accent italic">mirrors</span> your
               Claude&nbsp;Code sessions.
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-mut max-w-prose text-pretty">
-              Clawd lives on an ESP32-C3 with a tiny 240×240 screen. It focuses while
+              Clyde lives on an ESP32-C3 with a tiny 240×240 screen. It focuses while
               you work, taps when it needs you, and celebrates when you&apos;re done.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">

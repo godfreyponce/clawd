@@ -1,6 +1,6 @@
 /*
  * ╔══════════════════════════════════════════════════════════════╗
- *   CLAWD MOCHI — ESP32-C3 Super Mini + ST7789 1.54" 240×240
+ *   CLYDE MOCHI — ESP32-C3 Super Mini + ST7789 1.54" 240×240
  *
  *   Wiring:
  *     SDA → GPIO 10  (hardware SPI MOSI)
@@ -12,7 +12,7 @@
  *     VCC → 3V3
  *     GND → GND
  *
- *   WiFi: "ClaWD-Mochi"  pw: clawd1234  → http://192.168.4.1
+ *   WiFi: "Clyde-Mochi"  pw: clyde1234  → http://192.168.4.1
  * ╚══════════════════════════════════════════════════════════════╝
  */
 
@@ -32,8 +32,8 @@
 Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
 
 // ── WiFi ──────────────────────────────────────────────────────
-const char* AP_SSID = "ClaWD-Mochi";
-const char* AP_PASS = "clawd1234";
+const char* AP_SSID = "Clyde-Mochi";
+const char* AP_PASS = "clyde1234";
 WebServer server(80);
 
 // ── Display ───────────────────────────────────────────────────
@@ -245,8 +245,8 @@ void drawLogoFilled(uint16_t bg, uint16_t fg) {
   }
 }
 
-// ── Boot mascot: the pixel Clawd crab scuttles across ─────────
-void drawClawd(int16_t cx, int16_t cy, int16_t u, uint16_t fill) {
+// ── Boot mascot: the pixel Clyde crab scuttles across ─────────
+void drawClyde(int16_t cx, int16_t cy, int16_t u, uint16_t fill) {
   int16_t bw = 13 * u, bh = 9 * u, L = cx - bw / 2, T = cy - bh / 2;
   int16_t parts[9][4] = {
     {L, T, bw, bh},                                                                       // body
@@ -275,7 +275,7 @@ void drawMascotCrossing() {
     int16_t x  = -55 + (int16_t)(p * (DISP_W + 110));
     int16_t cy = 150 - (int16_t)(fabs(sinf(p * PI * 4)) * 32);
     if (prevX != -999) tft.fillRect(prevX - 52, prevCy - 44, 104, 96, C_BLACK);  // erase old
-    drawClawd(x, cy, u, C_ORANGE);
+    drawClyde(x, cy, u, C_ORANGE);
     prevX = x; prevCy = cy;
     delay(18);
   }
@@ -319,10 +319,30 @@ void drawNormalEyes(int16_t ox = 0, bool blink = false) {
 // ── Working face: plain eyes + a "typing" status line ─────────
 // Short phrases the crab types out, one char at a time, while a session runs.
 const char* WORK_PHRASES[] = {
-  "thinking...", "pondering...", "on it!", "brewing...",
-  "almost there", "let me see...",
+  "beaming...", "booping...", "bouncing...", "brewing...", "bubbling...",
+  "chasing...", "churning...", "coalescing...", "conjuring...", "cooking...",
+  "crafting...", "crunching...", "cuddling...", "dancing...", "dazzling...",
+  "discovering...", "doodling...", "dreaming...", "drifting...", "enchanting...",
+  "exploring...", "finding...", "floating...", "fluttering...", "foraging...",
+  "forging...", "frolicking...", "gathering...", "giggling...", "gliding...",
+  "greeting...", "growing...", "hatching...", "herding...", "honking...",
+  "hopping...", "hugging...", "humming...", "imagining...", "inventing...",
+  "jingling...", "juggling...", "jumping...", "kindling...", "knitting...",
+  "launching...", "leaping...", "mapping...", "marinating...", "meandering...",
+  "mixing...", "moseying...", "munching...", "napping...", "nibbling...",
+  "noodling...", "orbiting...", "painting...", "percolating...", "petting...",
+  "plotting...", "pondering...", "popping...", "prancing...", "purring...",
+  "puzzling...", "questing...", "riding...", "roaming...", "rolling...",
+  "sauteeing...", "scribbling...", "seeking...", "shimmying...", "singing...",
+  "skipping...", "sleeping...", "snacking...", "sniffing...", "snuggling...",
+  "soaring...", "sparking...", "spinning...", "splashing...", "sprouting...",
+  "squishing...", "stargazing...", "stirring...", "strolling...", "swimming...",
+  "swinging...", "tickling...", "tinkering...", "toasting...", "tumbling...",
+  "twirling...", "waddling...", "wandering...", "watching...", "weaving...",
+  "whistling...", "wibbling...", "wiggling...", "wishing...", "wobbling...",
+  "wondering...", "yawning...", "zooming...",
 };
-const uint8_t WORK_PHRASE_N = 6;
+const uint8_t WORK_PHRASE_N = sizeof(WORK_PHRASES) / sizeof(WORK_PHRASES[0]);
 uint8_t  workPhrase   = 0;     // which phrase
 uint8_t  workChars    = 0;     // how many chars shown
 uint32_t workTickMs   = 0;     // next type/advance time
@@ -472,15 +492,15 @@ void termClear() {
 void termDrawHeader() {
   tft.fillRect(0, 0, DISP_W, TERM_PAD_Y + 1, C_DARKBG);
   tft.setTextColor(C_ORANGE); tft.setTextSize(1);
-  tft.setCursor(TERM_PAD_X, 4); tft.print("clawd@mochi terminal");
+  tft.setCursor(TERM_PAD_X, 4); tft.print("clyde@mochi terminal");
   tft.drawFastHLine(0, TERM_PAD_Y, DISP_W, C_ORANGE);
 }
 
-// Prefix "clawd:~$ " in green, drawn only when the row has content
+// Prefix "clyde:~$ " in green, drawn only when the row has content
 void termDrawPrefix(int16_t yy) {
   tft.setTextColor(C_GREEN); tft.setTextSize(1);
   tft.setCursor(TERM_PAD_X, yy + 6);
-  tft.print("clawd:~$ ");
+  tft.print("clyde:~$ ");
 }
 
 #define PREFIX_PX 54   // 9 chars × 6px = 54px at textSize 1
@@ -729,7 +749,7 @@ const char INDEX_HTML[] PROGMEM = R"rawhtml(
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Clawd Mochi</title>
+<title>Clyde Mochi</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:#1c1c20;font-family:'Courier New',monospace;color:#e8e4dc;
@@ -832,7 +852,7 @@ canvas{width:100%;border-radius:8px;border:1.5px solid #38343a;
 
 <div class="hdr">
   <span class="mascot">&#x2590;&#x259B;&#x2588;&#x2588;&#x2588;&#x259C;&#x258C;<br>&#x259C;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x259B;<br>&#x2598;&#x2598;&nbsp;&#x259D;&#x259D;</span>
-  <div class="sitename">CLAWD &middot; MOCHI &middot; CONTROLLER</div>
+  <div class="sitename">CLYDE &middot; MOCHI &middot; CONTROLLER</div>
 </div>
 
 <div class="busy" id="busy"><div class="busy-i"></div></div>
@@ -887,7 +907,7 @@ canvas{width:100%;border-radius:8px;border:1.5px solid #38343a;
 <div class="sec">// terminal</div>
 <div class="twrap" id="twrap">
   <div class="thdr">
-    <span class="tttl">&#9658; clawd:~$</span>
+    <span class="tttl">&#9658; clyde:~$</span>
     <button class="tx" onclick="closeTerm()">&#x2715; exit terminal</button>
   </div>
   <div class="trow">
@@ -1310,7 +1330,7 @@ void setup() {
   // ── Boot splash ────────────────────────────────────────────
   tft.fillScreen(animBgColor);
   tft.setTextColor(C_WHITE); tft.setTextSize(4);
-  tft.setCursor((DISP_W - 5 * 24) / 2, DISP_H / 2 - 16); tft.print("Clawd");
+  tft.setCursor((DISP_W - 5 * 24) / 2, DISP_H / 2 - 16); tft.print("Clyde");
   delay(1100);
 
   // ── Mascot scuttles across, then the logo ──────────────────
@@ -1325,9 +1345,9 @@ void setup() {
   tft.fillScreen(C_DARKBG);
   tft.fillRect(0, 0, DISP_W, 4, C_ORANGE);
   tft.setTextColor(C_WHITE);  tft.setTextSize(2);
-  tft.setCursor(12, 16);  tft.print("WiFi: ClaWD-Mochi");
+  tft.setCursor(12, 16);  tft.print("WiFi: Clyde-Mochi");
   tft.setTextColor(C_MUTED);  tft.setTextSize(1);
-  tft.setCursor(12, 44);  tft.print("password: clawd1234");
+  tft.setCursor(12, 44);  tft.print("password: clyde1234");
   tft.setTextColor(C_WHITE);  tft.setTextSize(2);
   tft.setCursor(12, 68);  tft.print("Open browser:");
   tft.setTextColor(C_ORANGE); tft.setTextSize(2);

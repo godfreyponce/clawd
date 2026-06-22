@@ -105,7 +105,7 @@ Go to **Tools** and set:
 ### Step 5 — Upload the sketch
 
 1. Clone or download this repo
-2. Open `clawd_mochi/clawd_mochi.ino` in Arduino IDE
+2. Open `clyde_mochi/clyde_mochi.ino` in Arduino IDE
 3. Connect the ESP32 via USB-C
 4. Select the correct port under **Tools → Port**
 5. Click **Upload** (→ arrow button)
@@ -120,7 +120,7 @@ Go to **Tools** and set:
 1. Power the ESP32 via USB-C (any USB charger or power bank)
 2. Wait ~3 seconds for the boot animation to finish
 3. On your phone or computer, go to **WiFi settings**
-4. Connect to the network: **`ClaWD-Mochi`** · password: **`clawd1234`**
+4. Connect to the network: **`Clyde-Mochi`** · password: **`clyde1234`**
 5. Open a browser and go to **`http://192.168.4.1`**
 
 You should see the web controller:
@@ -196,7 +196,7 @@ You can also download the models from MakerWorld: [https://makerworld.com/en/mod
 
 ### Eye size and position
 
-Edit these constants near the top of `clawd_mochi.ino`:
+Edit these constants near the top of `clyde_mochi.ino`:
 
 ```cpp
 #define EYE_W   30    // eye width in pixels
@@ -229,7 +229,7 @@ Contributions are very welcome! Here are some ideas:
 - **OTA updates** — add over-the-air firmware updates
 - **MQTT / Home Assistant** — connect to smart home platforms
 
-To contribute: fork the repo, make your changes, and open a pull request. Please keep the single-file structure (`clawd_mochi.ino`) so it stays easy for beginners to flash.
+To contribute: fork the repo, make your changes, and open a pull request. Please keep the single-file structure (`clyde_mochi.ino`) so it stays easy for beginners to flash.
 
 ## License
 

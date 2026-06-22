@@ -1,4 +1,4 @@
-/** Clawd brand marks — the pixel crab mascot and the asterisk logo glyph. */
+/** Clyde brand marks: the pixel crab mascot and the asterisk logo glyph. */
 
 const CRAB = "#cd6444";
 const CRAB_EYE = "#1a120e";
@@ -18,7 +18,7 @@ export function Mascot({
       height={(size * 140) / 160}
       viewBox="-15 -20 160 140"
       role="img"
-      aria-label="Clawd, a blocky pixel crab"
+      aria-label="Clyde, a blocky pixel crab"
       className={`${bob ? "bob" : ""} ${className}`}
       shapeRendering="crispEdges"
     >

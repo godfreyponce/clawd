@@ -1,6 +1,6 @@
-# Clawd Mochi — Agent Handoff & Dev Log
+# Clyde Mochi — Agent Handoff & Dev Log
 
-> Read this first if you're a fresh agent/session working on Clawd Mochi.
+> Read this first if you're a fresh agent/session working on Clyde Mochi.
 > It captures current state, the **exact flashing procedure that works**, and the
 > hard-won problem/solution log from the day we got Variant C onto the board.
 > Last updated: 2026-06-20.
@@ -9,7 +9,7 @@
 
 ## What this is
 A desk companion: an **ESP32-C3 Super Mini + ST7789 1.54" 240×240 SPI display** in a
-**sealed enclosure**, showing "Clawd" the crab's face. It runs an autonomous idle loop,
+**sealed enclosure**, showing "Clyde" the crab's face. It runs an autonomous idle loop,
 hosts a WiFi AP web controller, and takes one-word serial commands over USB-C. Claude Code
 hooks drive its face to mirror the user's coding-session state.
 
@@ -18,7 +18,7 @@ Based on github.com/yousifamanuel/clawd-mochi.
 ## Key paths
 | Thing | Path |
 |---|---|
-| **Firmware sketch** (the real file) | `clawd-mochi/clawd_mochi/clawd_mochi.ino` *(nested two levels — NOT in repo root)* |
+| **Firmware sketch** (the real file) | `clyde-mochi/clyde_mochi/clyde_mochi.ino` *(nested two levels — NOT in repo root)* |
 | Serial bridge | `poke.sh` (repo root) — auto-detects port, `echo`es a command word |
 | Face mockups | `working_face_variants.html` (repo root) — the 3 working-face options A/B/C |
 | Claude Code hooks | `~/.claude/settings.json` → `UserPromptSubmit`→`working`, `Notification`→`notify`, `Stop`→`done` |
@@ -27,10 +27,10 @@ Based on github.com/yousifamanuel/clawd-mochi.
 | ESP32 core | `esp32:esp32` **3.3.10** |
 
 Wiring: SDA=GPIO10, SCL=GPIO8, RST=GPIO2, DC=GPIO1, CS=GPIO4, BLK=GPIO3.
-This folder is **not** a git repo. The nested `clawd-mochi/` is the upstream clone (has its own `.git`).
+This folder is **not** a git repo. The nested `clyde-mochi/` is the upstream clone (has its own `.git`).
 
 ## Current firmware state (what's on the board now — as of 2026-06-20)
-- **Boot sequence**: "Clawd" splash → 🦀 **pixel-crab mascot hops across** on black (`drawClawd` +
+- **Boot sequence**: "Clyde" splash → 🦀 **pixel-crab mascot hops across** on black (`drawClyde` +
   `drawMascotCrossing`, flicker-free: only the crab footprint repaints) → Anthropic logo (now with
   **no "Anthropic" text**) → WiFi info **~2s** → drops straight to **idle eyes** (`started=true`).
 - **`working` face = "typing"**: plain eyes + a status line that types out phrases one char at a time
@@ -74,15 +74,15 @@ esptool's software USB reset, which works **only over a solid USB connection**. 
    ```
    ARDUINO_CLI="/Applications/Arduino IDE.app/Contents/Resources/app/lib/backend/resources/arduino-cli"
    "$ARDUINO_CLI" compile --fqbn "esp32:esp32:esp32c3:CDCOnBoot=cdc" \
-     --output-dir /tmp/clawd_build \
-     "$HOME/Developer/clawdMochi/clawd-mochi/clawd_mochi"
+     --output-dir /tmp/clyde_build \
+     "$HOME/Developer/clydeMochi/clyde-mochi/clyde_mochi"
    ```
 4. **Flash** the full image (leave the board PLUGGED IN — do NOT power-cycle):
    ```
    ESPTOOL=~/Library/Arduino15/packages/esp32/tools/esptool_py/5.3.0/esptool
    PORT=$(find /dev -maxdepth 1 -name 'cu.usbmodem*' | head -1)   # NOT `ls` — see gotcha #3
    "$ESPTOOL" --chip esp32c3 --port "$PORT" --before usb-reset --after hard-reset \
-     write-flash -z 0x0 /tmp/clawd_build/clawd_mochi.ino.merged.bin
+     write-flash -z 0x0 /tmp/clyde_build/clyde_mochi.ino.merged.bin
    ```
    Success = `Hash of data verified.` Takes ~7s. If "No serial data received": it's the cable/connection —
    swap cable/port and retry; do NOT start unplugging mid-attempt (that sabotages it).
@@ -109,7 +109,7 @@ Root cause: compiled with the bare FQBN `esp32:esp32:esp32c3`, whose **default i
 depend on Serial, so it looked fine but masked the break. Fix: **always compile with
 `esp32:esp32:esp32c3:CDCOnBoot=cdc`.** Verify with `arduino-cli board details --fqbn esp32:esp32:esp32c3`.
 
-**3. Port detection returned garbage (`clawd-mochi`).**
+**3. Port detection returned garbage (`clyde-mochi`).**
 Root cause: `ls /dev/cu.usbmodem*` under this shell's **nullglob** — when no device matches, the glob
 vanishes and `ls` lists the **current directory** instead. Fix: use
 `find /dev -maxdepth 1 -name 'cu.usbmodem*'`. Also: the port name **shuffles** between
@@ -134,7 +134,7 @@ enabled and use a good cable so software flashing keeps working.
 
 ## 🔜 Pending / next features
 The user has several features planned (TBD — ask them). When adding any:
-- Edit `clawd-mochi/clawd_mochi/clawd_mochi.ino`, reflash via the procedure above.
+- Edit `clyde-mochi/clyde_mochi/clyde_mochi.ino`, reflash via the procedure above.
 - The phone web UI is a raw-string `INDEX_HTML` PROGMEM blob inside the same `.ino` (search `INDEX_HTML`).
 - New face states: follow the `working`/`notify`/`done` pattern in `handleSerialCommand()`; remember the
   idle-freeze rule (`faceMouth != MOUTH_NONE` holds the face).

@@ -50,15 +50,15 @@ const pins: [string, string][] = [
 
 const commands: [string, string, string][] = [
   ["working", "semantic", "Plain eyes plus a typing status line. Holds (idle frozen)."],
-  ["notify", "semantic", "Open mouth that gently bobs — Claude needs you. Holds."],
+  ["notify", "semantic", "Open mouth that gently bobs when Claude needs you. Holds."],
   ["done", "semantic", "A brief happy beat (smile and sparkles), then idle resumes."],
   ["blink / wiggle / look", "gesture", "One-off eye animations."],
   ["squish / eyes / logo", "gesture", "Squint, reset to eyes, or replay the logo."],
 ];
 
 const wifi: [string, string][] = [
-  ["SSID", "ClaWD-Mochi"],
-  ["Password", "clawd1234"],
+  ["SSID", "Clyde-Mochi"],
+  ["Password", "clyde1234"],
   ["URL", "192.168.4.1"],
 ];
 
@@ -67,15 +67,15 @@ export default function Docs() {
     <article className="mx-auto max-w-3xl px-6 pt-16 pb-24">
       <div className="text-[11px] tracking-[0.2em] uppercase text-mut mb-3">Documentation</div>
       <h1 className="font-serif text-4xl md:text-5xl font-semibold tracking-tight mb-12">
-        How Clawd works
+        How Clyde works
       </h1>
 
       <Section id="overview" label="01" title="Overview">
         <p>
-          Clawd is a desk companion: an <strong className="font-medium">ESP32-C3 Super Mini</strong>{" "}
+          Clyde is a desk companion: an <strong className="font-medium">ESP32-C3 Super Mini</strong>{" "}
           driving a <strong className="font-medium">1.54&quot; 240×240 ST7789</strong> display, showing
-          a crab&apos;s face. It runs an autonomous idle loop, hosts a WiFi web controller, and listens
-          on USB serial for one-word commands. Claude Code hooks send those commands, so the face
+          Clyde&apos;s face. It runs an autonomous idle loop, hosts a WiFi web controller, and listens
+          on USB serial for one word commands. Claude Code hooks send those commands, so the face
           mirrors your coding session in real time.
         </p>
       </Section>
@@ -100,8 +100,8 @@ export default function Docs() {
 
       <Section id="firmware" label="03" title="Firmware and the face">
         <p>
-          A single Arduino sketch (<Mono>clawd_mochi.ino</Mono>) draws the face — two black eyes on a
-          Mandarin-orange background — and runs everything non-blocking from <Mono>loop()</Mono> via{" "}
+          A single Arduino sketch (<Mono>clyde_mochi.ino</Mono>) draws the face, two black eyes on a
+          Mandarin-orange background, and runs everything non-blocking from <Mono>loop()</Mono> via{" "}
           <Mono>millis()</Mono>, so WiFi and serial stay responsive during animations.
         </p>
         <p>
@@ -136,7 +136,7 @@ export default function Docs() {
       </Section>
 
       <Section id="web" label="05" title="WiFi web controller">
-        <p>The board hosts an access point and serves a phone controller — no app needed.</p>
+        <p>The board hosts an access point and serves a phone controller, no app needed.</p>
         <div className="not-prose grid grid-cols-3 gap-3">
           {wifi.map(([k, v]) => (
             <div key={k} className="rounded-xl border border-line p-3.5 text-center">
@@ -151,28 +151,28 @@ export default function Docs() {
         </p>
       </Section>
 
-      <Section id="flashing" label="06" title="Flashing — the procedure that works">
+      <Section id="flashing" label="06" title="Flashing: the procedure that works">
         <p>
           The BOOT button is sealed in the case, so flashing relies on esptool&apos;s software USB
-          reset — which works reliably{" "}
+          reset, which works reliably{" "}
           <strong className="font-medium">only over a solid data cable plugged straight into the Mac</strong>
           . Two rules: compile with <Mono>CDCOnBoot=cdc</Mono>, and leave the board plugged in.
         </p>
         <Code>{`# 1) compile (CDC on boot = enabled is REQUIRED for serial)
 arduino-cli compile \\
   --fqbn "esp32:esp32:esp32c3:CDCOnBoot=cdc" \\
-  --output-dir /tmp/clawd_build \\
-  ~/Developer/clawdMochi/clawd-mochi/clawd_mochi
+  --output-dir /tmp/clyde_build \\
+  ~/Developer/clydeMochi/clyde-mochi/clyde_mochi
 
-# 2) flash the full image — keep it plugged in, don't power-cycle
+# 2) flash the full image, keep it plugged in, don't power-cycle
 PORT=$(find /dev -maxdepth 1 -name 'cu.usbmodem*' | head -1)
 esptool --chip esp32c3 --port "$PORT" \\
   --before usb-reset --after hard-reset \\
-  write-flash -z 0x0 /tmp/clawd_build/clawd_mochi.ino.merged.bin
+  write-flash -z 0x0 /tmp/clyde_build/clyde_mochi.ino.merged.bin
 # success = "Hash of data verified."  (~7 seconds)`}</Code>
         <p>
-          If you see <Mono>No serial data received</Mono>, it&apos;s almost always the cable — swap to
-          a known-good data cable and retry; don&apos;t start unplugging mid-attempt. See the{" "}
+          If you see <Mono>No serial data received</Mono>, it&apos;s almost always the cable, so swap
+          to a known-good data cable and retry; don&apos;t start unplugging mid-attempt. See the{" "}
           <a
             href="/journey"
             className="text-accent underline underline-offset-4 decoration-accent/40 hover:decoration-accent transition"

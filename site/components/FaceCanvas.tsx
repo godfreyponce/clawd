@@ -9,7 +9,7 @@ const LX = (W - (EYE_W * 2 + GAP)) / 2, RX = LX + EYE_W + GAP, EY = (H - EYE_H) 
 const MX = W / 2, MY = 155;
 const PHRASES = ["thinking...", "pondering...", "on it!", "brewing...", "almost there", "let me see..."];
 
-/** Device-accurate Clawd face, ported from the firmware's draw routines. */
+/** Device-accurate Clyde face, ported from the firmware's draw routines. */
 export default function FaceCanvas({
   mode = "idle",
   size = 240,
