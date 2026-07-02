@@ -14,3 +14,6 @@ npm-debug.log*
 # Arduino / build artifacts
 build/
 *.elf
+
+# Env files
+.env*
