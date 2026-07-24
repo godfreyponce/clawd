@@ -27,7 +27,8 @@ Based on github.com/yousifamanuel/clawd-mochi.
 | **Firmware sketch** (the real file) | `clyde-mochi/clyde_mochi/clyde_mochi.ino` *(nested two levels — NOT in repo root)* |
 | Serial bridge | `poke.sh` (repo root) — auto-detects port, `echo`es a command word |
 | Face mockups | `working_face_variants.html` (repo root) — the 3 working-face options A/B/C |
-| Claude Code hooks | `~/.claude/settings.json` → `UserPromptSubmit`→`working`, `Notification`→`notify`, `Stop`→`done` |
+| Claude Code hooks | `~/.claude/settings.json` → `UserPromptSubmit`/`Notification`/`Stop`/`SessionEnd` → `clyde-hook.sh working`/`notify`/`done`/`end` |
+| Hook arbiter | `clyde-hook.sh` (repo root) — resolves concurrent sessions (cmux tabs) to one face, then calls `poke.sh`. The hooks are terminal-agnostic; nothing is tied to Ghostty or cmux. |
 | Bundled arduino-cli | `/Applications/Arduino IDE.app/Contents/Resources/app/lib/backend/resources/arduino-cli` |
 | esptool | `~/Library/Arduino15/packages/esp32/tools/esptool_py/5.3.0/esptool` |
 | ESP32 core | `esp32:esp32` **3.3.10** |
