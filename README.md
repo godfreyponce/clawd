@@ -12,7 +12,7 @@ I wanted to know how my Claude Code sessions were doing. So I 3D printed [clawd-
 
 - Claude Code hooks that drive the face over USB-C serial (`clyde-hook.sh`, `poke.sh`)
 - One face across many sessions. Without this, a Stop in one tab cleared the working face another tab had just set
-- Serial commands and new faces in the firmware, including 106 thinking words on the working face
+- Serial commands and new faces in the firmware, including 108 thinking words on the working face
 - A small site for it in `site/`
 
 ## How it works
